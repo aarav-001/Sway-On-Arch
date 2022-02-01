@@ -1,0 +1,146 @@
+
+@keyframes blink-warning {
+    70% {
+        color: #ffffff;
+    }
+
+    to {
+        color: #ffffff;
+        background-color: #ebcb8b;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+      color: #ffffff;
+    }
+
+    to {
+        color: #ffffff;
+        background-color: #BF616A;
+    }
+}
+
+* {
+    border: none;
+    min-height: 0;
+    margin: 0.2em 0.3em 0.2em 0.3em;
+}
+
+/* The whole bar */
+#waybar {
+    background-color:transparent;
+    color: #ffffff;
+    font-family:  "Ubuntu Mono", "Jetbrains Mono";
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Each module */
+
+#clock,
+#custom-media,
+#memory,
+#network,
+#pulseaudio,
+#tray,
+#backlight{
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+}
+
+/* Each module that should blink */
+#memory{
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* Each critical module */
+#memory.critical{
+    color: #BF616A;
+}
+
+/* Each critical that should blink */
+#memory.critical{
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+/* Each warning */
+#network.disconnected,
+#memory.warning{
+    color: #ebcb8b;
+}
+
+
+/* Workspaces stuff */
+
+#workspaces button {
+    font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
+    padding: 0;
+    color: #FFD700;
+    font-size: 1.1em;
+}
+
+#workspaces button.focused {
+    color:#33ff33;
+    font-size: 1.1em;
+}
+
+#workspaces button.urgent {
+    border-color: #ff6600;
+    color: #c9545d;
+    font-size: 1.1em;
+}
+
+#window {
+    margin-right: 40px;
+    margin-left: 40px;
+    font-weight: normal;
+}
+
+#network {
+    color:#42e66c;
+    font-size:1.3em;
+}
+
+#network.format-disconnected{
+    color:#42e66c;
+    font-size:1.3em;
+}
+
+#memory {
+    color:#FFD700;
+}
+
+#custom-media {
+    color: #ffffff;
+    min-width: 100px;
+    font-weight:normal;
+}
+
+#clock {
+    padding:0.2em 0.6em 0.2em 0.6em;
+    color: #00ffff;
+}
+
+#pulseaudio {
+    color: #ff80d5;
+}
+
+#pulseaudio.muted {
+    color: #ff80d5;
+}
+
+#pulseaudio.source-muted {
+    color: #ff80d5;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

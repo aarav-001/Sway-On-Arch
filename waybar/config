@@ -1,0 +1,100 @@
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    
+    // Order of modules to render
+    "modules-left": ["sway/workspaces", "custom/media"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "memory", "pulseaudio", "network"],
+    
+    // Modules configuration
+    
+    //Workspaces Module
+    "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "format": "{icon}",
+         "format-icons": {
+            "urgent": "",
+            "focused": "",
+            "default": ""
+         }
+     },
+    
+   // Memory Module
+    "memory": {
+         "format": "<span font='13'>{icon}</span> {used:0.1f}G",
+         "format-icons": {
+            "default": ""
+         },
+         "interval": 1,
+         "tooltip": false
+     }, 
+
+    // Module for application running
+    "tray": {
+        "spacing": 5,
+        "icon-size":15
+    },
+    
+    // Clock Module
+    "clock": {
+        "format": "{:%a %b %e %H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>",
+        "today-format": "<b>{}</b>"
+    },
+    
+    // Network Module
+    "network": {
+        // "interface": "wlan0", // (Optional) To force the use of this interface,
+        "format-wifi": "直",
+        "format-ethernet": "",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "睊",
+        "format-alt": " {bandwidthUpBits}  {bandwidthDownBits}",
+        "family": "ipv4",
+        "tooltip-format-wifi": "直  @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%",
+        "tooltip-format-ethernet": " @ {essid}\nIP: {ipaddr}"
+    },
+    
+    // Audio Module
+    "pulseaudio": {
+        "format": "<span font='13'>{icon}</span> {volume}%",
+        "format-bluetooth": "<span color='#FFA500' font='13'></span> <span color='#FFA500'>{volume}%</span>",
+        "format-bluetooth-muted": "<span font='13'>{format_source}</span>",
+        "format-muted": "<span font='13'>{format_source}</span>",
+			"format-source": "婢",
+			"format-source-muted": "婢",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+ 	    "default": ["墳", "墳", "墳"]
+        },
+        "on-click": "pavucontrol"
+    },
+    
+    // Custom Module for playback
+    "custom/media": {
+          "format": "<span color ='#1ed761' font='11'></span> <span font='8'> {icon}</span>{}",
+          "format-icons": {
+          	"Paused": ""
+   	      },
+          "return-type": "json",
+          "max-length":70,
+          "exec": "playerctl -a metadata --format '{\"text\": \" {{artist}} | {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+          "on-click": "playerctl play-pause"
+      },
+
+	// Dunst Module
+    "custom/dunst": {
+     	"exec": "~/.config/waybar/scripts/dunst.sh",
+        "on-click": "dunstctl set-paused toggle",
+        "restart-interval": 1
+      }
+                
+}
+
+
+
+
+

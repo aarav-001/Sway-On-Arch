@@ -1,0 +1,252 @@
+### Variables
+
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+## Applications
+
+# Terminal 
+set $term alacritty
+
+# File Manager
+set $files nautilus
+
+# Browser
+set $browser google-chrome-stable
+
+# VS Code
+set $code code
+
+# Telegram
+set $telegram telegram-desktop
+
+# Menu Wofi
+set $menu exec wofi --show=drun --width=600
+
+### Window configuration
+# Set inner & outer gaps
+gaps inner 10
+gaps outer 5
+
+### Window borders
+
+# Disable window title bar
+default_border pixel 2
+
+# Window decoration
+# class            border   backgr.   text     indicator  child_border
+client.focused     #00ffff  #00ffff   #ffffff  #00ffff    #00ffff
+
+
+# Autostart
+exec --no-startup-id mako
+
+### GTK Settings
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'paradise'
+    gsettings set $gnome-schema icon-theme 'Papirus'
+    gsettings set $gnome-schema font-name 'Inter V 11'
+    gsettings set $gnome-schema document-font-name 'Cascadia Code Regular 12'
+    gsettings set $gnome-schema monospace-font-name 'Inter Mono 11'
+}
+
+
+### Font configuration
+font pango: Inter V:style=Regular 11:
+
+
+### Wallpaper configuration
+output * bg ~/Pictures/Wallpapers/wp6565099-minimalistic-scenery-wallpapers.png fill
+
+
+### Idle configuration
+
+# Line 73 To Pause any Playing Media before sleep
+exec swayidle -w \
+  	timeout 300 'swaylock -f' \
+  	timeout 600 'swaymsg "output * dpms off"' \
+  		resume 'swaymsg "output * dpms on"' \
+        before-sleep 'playerctl pause'\
+  	before-sleep 'swaylock -f'
+	
+# Enables inhibit_idle when playing audio
+exec sway-audio-idle-inhibit
+
+# Enable inhibit_idle when app is in fullscreen
+for_window [class=".*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
+
+
+	
+### Toggle Keys Configuration
+
+#Initially enable NumLock
+input * xkb_numlock enable
+
+
+### Multimedia Keys
+bindsym XF86AudioMute exec pulsemixer --toggle-mute --get-mute | ~/.config/sway/notify.sh muted
+bindsym XF86AudioRaiseVolume exec ponymix increase 5 | ~/.config/sway/notify.sh audio
+bindsym XF86AudioLowerVolume exec ponymix decrease 5 | ~/.config/sway/notify.sh audio
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+
+### Key bindings
+
+# Basics:
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Start your launcher
+    bindsym $mod+d exec $menu
+
+    # Start code
+    bindsym $mod+c exec $code
+
+    # Launch Files
+    bindsym $mod+n exec $files
+    
+    # Launch browser
+    bindsym $mod+g exec $browser
+
+    # Launch Telegram
+    bindsym $mod+t exec $telegram
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m	
+
+    # Opens a window in Floating mode
+    # for_window [app_id="Alacritty"] floating enable
+
+	## Screenshot
+
+	# Take a screenshot of size
+	bindsym Shift+Print exec grim -g "$(slurp)" && notify-send "Screenshot captured!"
+
+	# Take sreenshot of entire screen
+	bindsym Print exec grim ~/Pictures/Screenshot/ && notify-send "Screenshot captured!"
+
+	# Take a screenshot of size and copy to clipboard
+	bindsym Ctrl+Shift+Print exec grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot captured to clipboard!"
+
+
+# Moving around:
+
+    # Move your focus around
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+# Workspaces:
+
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+    
+    # Move windows to next workspace
+    bindsym $mod+Control+Left move container to workspace prev; workspace prev
+    bindsym $mod+Control+Right move container to workspace next; workspace next
+
+    
+    
+# Layout stuff:
+
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+
+# Scratchpad:
+
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+
+# Resizing containers:
+
+mode "resize" {
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Ctrl+Shift+r mode "resize"
+
+
+# Status Bar:
+
+bar {
+	swaybar_command waybar
+    }
+
+include /etc/sway/config.d/*
